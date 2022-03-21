@@ -1,0 +1,15 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: trex
+  author: ChristopherJHart
+  license: "license (MIT)"
+  platforms:
+    - name: Ubuntu
+      version:
+        - focal
+  galaxy_tags:
+    - trex
+    - cisco
+    - traffic generator

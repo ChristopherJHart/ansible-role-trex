@@ -1,0 +1,31 @@
+---
+- name: "Create directory where TRex will be installed"
+  ansible.builtin.file:
+    path: "{{ trex_install_dir }}"
+    owner: "{{ trex_user }}"
+    group: "{{ trex_group }}"
+    state: "directory"
+  become: yes
+- name: "Construct URL to download TRex from"
+  ansible.builtin.set_fact:
+    trex_full_download_url: "'{{ trex_download_url }}{{ trex_download_version }}' if trex_download_version == 'latest' else '{{ trex_download_url }}{{ trex_download_version }}.tar.gz'"
+- name: "Download TRex to temporary directory"
+  ansible.builtin.get_url:
+    url: "{{ trex_full_download_url }}"
+    dest: "/tmp/trex.tar.gz"
+- name: "Uncompress TRex into installation directory"
+  ansible.builtin.unarchive:
+    src: "/tmp/trex.tar.gz"
+    dest: "{{ trex_install_dir }}"
+    remote_src: yes
+- name: "Correct TRex permissions within installation directory"
+  ansible.builtin.file:
+    path: "{{ trex_install_dir }}"
+    owner: "{{ trex_user }}"
+    group: "{{ trex_group }}"
+    state: "directory"
+    recurse: yes
+- name: "Remove TRex download file within temporary directory"
+  ansible.builtin.file:
+    path: "/tmp/trex.tar.gz"
+    state: "absent"
