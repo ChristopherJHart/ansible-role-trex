@@ -46,4 +46,4 @@
   ansible.builtin.file:
     path: "/tmp/trex.tar.gz"
     state: "absent"
-  when: trex_cleanup_downloaded_file is yes
+  when: trex_cleanup_downloaded_file
