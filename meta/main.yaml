@@ -5,6 +5,7 @@ galaxy_info:
   role_name: trex
   author: "Christopher Hart"
   namespace: christopherjhart
+  description: "Install the Cisco TRex traffic generator"
   license: "license (MIT)"
   min_ansible_version: 2.1
   platforms:
