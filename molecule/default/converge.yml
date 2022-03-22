@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include christopherjhart.trex"
+      include_role:
+        name: "trex"
+      vars:
+        ansible_user: "root"
