@@ -6,13 +6,21 @@
     group: "{{ trex_group }}"
     state: "directory"
   become: yes
-- name: "Construct URL to download TRex from"
+- name: >-
+    Construct URL to download TRex from if trex_download_version is set to 'latest'
   ansible.builtin.set_fact:
-    trex_full_download_url: "'{{ trex_download_url }}{{ trex_download_version }}' if trex_download_version == 'latest' else '{{ trex_download_url }}{{ trex_download_version }}.tar.gz'"
+    trex_full_download_url: "{{ trex_download_url }}{{ trex_download_version }}"
+  when: trex_download_version == 'latest'
+- name: >-
+    Construct URL to download TRex from if trex_download_version is not set to 'latest'
+  ansible.builtin.set_fact:
+    trex_full_download_url: "{{ trex_download_url }}{{ trex_download_version }}.tar.gz"
+  when: trex_download_version != 'latest'
 - name: "Download TRex to temporary directory"
   ansible.builtin.get_url:
     url: "{{ trex_full_download_url }}"
     dest: "/tmp/trex.tar.gz"
+    validate_certs: no
 - name: "Uncompress TRex into installation directory"
   ansible.builtin.unarchive:
     src: "/tmp/trex.tar.gz"
@@ -29,3 +37,4 @@
   ansible.builtin.file:
     path: "/tmp/trex.tar.gz"
     state: "absent"
+  when: trex_cleanup_downloaded_file is true
