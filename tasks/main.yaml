@@ -21,11 +21,13 @@
     url: "{{ trex_full_download_url }}"
     dest: "/tmp/trex.tar.gz"
     validate_certs: no
+  register: download_trex
 - name: "Uncompress TRex into installation directory"
   ansible.builtin.unarchive:
     src: "/tmp/trex.tar.gz"
     dest: "{{ trex_install_dir }}"
     remote_src: yes
+  when: download_trex.changed
 - name: "Correct TRex permissions within installation directory"
   ansible.builtin.file:
     path: "{{ trex_install_dir }}"
