@@ -2,8 +2,8 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include christopherjhart.trex"
+    - name: "Include christopherjhart.trex"  # noqa fqcn-builtins
       include_role:
-        name: "trex"  # noqa fqcn-builtins
+        name: "trex"
       vars:
         ansible_user: "root"
