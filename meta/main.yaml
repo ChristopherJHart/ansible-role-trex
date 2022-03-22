@@ -3,8 +3,10 @@ dependencies: []
 
 galaxy_info:
   role_name: trex
-  author: ChristopherJHart
+  author: "Christopher Hart"
+  namespace: christopherjhart
   license: "license (MIT)"
+  min_ansible_version: 2.1
   platforms:
     - name: Ubuntu
       version:
