@@ -4,22 +4,28 @@
     path: "{{ trex_install_dir }}"
     owner: "{{ trex_user }}"
     group: "{{ trex_group }}"
+    mode: 0644
     state: "directory"
   become: yes
 - name: >-
-    Construct URL to download TRex from if trex_download_version is set to 'latest'
+    Construct URL to download TRex from if trex_download_version is set to
+    'latest'
   ansible.builtin.set_fact:
-    trex_full_download_url: "{{ trex_download_url }}{{ trex_download_version }}"
+    trex_full_download_url: >-
+      {{ trex_download_url }}{{ trex_download_version }}
   when: trex_download_version == 'latest'
 - name: >-
-    Construct URL to download TRex from if trex_download_version is not set to 'latest'
+    Construct URL to download TRex from if trex_download_version is not set to
+    'latest'
   ansible.builtin.set_fact:
-    trex_full_download_url: "{{ trex_download_url }}{{ trex_download_version }}.tar.gz"
+    trex_full_download_url: >-
+      {{ trex_download_url }}{{ trex_download_version }}.tar.gz
   when: trex_download_version != 'latest'
 - name: "Download TRex to temporary directory"
   ansible.builtin.get_url:
     url: "{{ trex_full_download_url }}"
     dest: "/tmp/trex.tar.gz"
+    mode: 0644
     validate_certs: no
   register: download_trex
 - name: "Uncompress TRex into installation directory"
@@ -27,16 +33,17 @@
     src: "/tmp/trex.tar.gz"
     dest: "{{ trex_install_dir }}"
     remote_src: yes
-  when: download_trex.changed
+  when: download_trex.changed  # noqa no-handler
 - name: "Correct TRex permissions within installation directory"
   ansible.builtin.file:
     path: "{{ trex_install_dir }}"
     owner: "{{ trex_user }}"
     group: "{{ trex_group }}"
+    mode: 0644
     state: "directory"
     recurse: yes
 - name: "Remove TRex download file within temporary directory"
   ansible.builtin.file:
     path: "/tmp/trex.tar.gz"
     state: "absent"
-  when: trex_cleanup_downloaded_file is true
+  when: trex_cleanup_downloaded_file is yes
