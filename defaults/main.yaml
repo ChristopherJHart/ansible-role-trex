@@ -4,3 +4,4 @@ trex_download_version: "latest"
 trex_install_dir: "/opt/trex/"
 trex_user: "{{ ansible_user }}"
 trex_group: "{{ ansible_user }}"
+trex_cleanup_downloaded_file: no
